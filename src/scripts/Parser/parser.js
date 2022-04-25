@@ -1,8 +1,4 @@
-const parseFile = (file) => {
-  const regV = 'div';
-  const findDefect = file.match(regV);
-  console.log('DEFECT: ', findDefect);
-};
+import { boyerMooreAlgorithm } from '../BoyerMooreAlgorithm';
 
 export function readFile(input) {
   let file = input.files[0];
@@ -15,7 +11,10 @@ export function readFile(input) {
     console.log('RESULT: ', reader.result);
     const newReader = reader.result.replace(/\r?\n/g, '');
     console.log('NEW RESULT: ', newReader);
-    parseFile(newReader);
+
+    const findDefect = boyerMooreAlgorithm(newReader, 'pattern');
+
+    console.log('DEFECT: ', findDefect);
   };
 
   reader.onerror = function () {

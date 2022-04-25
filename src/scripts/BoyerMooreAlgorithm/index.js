@@ -1,0 +1,1 @@
+export { boyerMooreAlgorithm } from './BoyerMooreAlgorithm';
