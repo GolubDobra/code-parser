@@ -1,1 +1,1 @@
-export { readFile } from './parser';
+export { parserCode } from './parser';

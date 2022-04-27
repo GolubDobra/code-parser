@@ -1,0 +1,27 @@
+.root {
+  margin: 20px 0 20px;
+}
+
+.root_source {
+  background-color: aliceblue;
+  border-top: 2px solid whitesmoke;
+  border-right: 2px solid whitesmoke;
+  border-bottom: 2px solid whitesmoke;
+}
+
+.root_error {
+  background-color: rgb(255, 241, 241);
+  border: 2px solid white;
+}
+
+.source {
+  margin: 20px;
+  font-size: 14px;
+  color: #282c34;
+  text-align: left;
+}
+
+pre {
+  margin: 0;
+  padding: 0;
+}

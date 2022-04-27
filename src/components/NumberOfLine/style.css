@@ -1,0 +1,19 @@
+.number-of-line {
+  padding: 20px 5px 20px 5px;
+  display: flex;
+  flex-direction: column;
+  background-color: aliceblue;
+  border-left: 2px solid whitesmoke;
+  border-top: 2px solid whitesmoke;
+  border-right: 1px solid #878b92;
+}
+/* //#b6b13f */
+
+.line {
+  height: 16px;
+  text-align: center;
+  font-size: 13px;
+  color: #878b92;
+  margin: 0;
+  padding: 0;
+}
