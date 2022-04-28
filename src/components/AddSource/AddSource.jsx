@@ -19,7 +19,7 @@ export const AddSource = ({ onChange }) => {
 
   return (
     <React.Fragment>
-      <p>Выберите файл, который хотите проверить</p>
+      <p>Выберите файл (HTML/JavaScript), который хотите проверить</p>
       <input className="code-input" type="file" onChange={handleChangeFile.bind(this)} />
     </React.Fragment>
   );

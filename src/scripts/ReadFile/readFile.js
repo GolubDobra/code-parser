@@ -1,4 +1,4 @@
-import { getAllLines, getNumberOfLine } from '../getNumOfLines';
+import { getNumberOfLine } from '../getNumOfLines';
 import { parserCode } from '../Parser/parser';
 
 export async function readFile(input) {
@@ -6,37 +6,33 @@ export async function readFile(input) {
   const reader = new FileReader();
   return new Promise((resolve, reject) => {
     reader.onerror = () => {
-      console.log('ERROR: ', reader.error);
-
-      reject({ error: `Sorry! Your file could not be loaded! Error: ${reader.error}` });
+      reject({ requestError: `Sorry! Your file could not be loaded! Error: ${reader.error}` });
     };
 
     reader.onload = () => {
       const code = reader.result;
       const defectByPattern = parserCode(code);
-      const allNumOfLine = getNumberOfLine(defectByPattern, code);
-      const line = getAllLines(code);
-      resolve({ code, allNumOfLine, numOfLatter: defectByPattern });
+      const allNumOfLine = [];
+
+      for (let key in defectByPattern) {
+        allNumOfLine.push(getNumberOfLine(defectByPattern[key], code));
+      }
+
+      resolve({
+        code: code,
+        errorNotice: {
+          warnings: defectByPattern.warnings.errorNotice,
+          error: defectByPattern.error.errorNotice,
+          possibleError: defectByPattern.possibleError.errorNotice,
+        },
+        warnings: { allNumOfLine: allNumOfLine[0], numOfLatter: defectByPattern.warnings },
+        error: { allNumOfLine: allNumOfLine[1], numOfLatter: defectByPattern.error },
+        possibleError: {
+          allNumOfLine: allNumOfLine[2],
+          numOfLatter: defectByPattern.possibleError,
+        },
+      });
     };
     reader.readAsText(file);
   });
-
-  // reader.readAsText(file);
-
-  // reader.onload = function () {
-  //   const code = reader.result;
-  //   const defectByPattern = parserCode(code);
-  //   const allNumOfLine = getNumberOfLine(defectByPattern, code);
-  //   const line = getAllLines(code);
-  //   console.log('{ code, allNumOfLine }:', { code, allNumOfLine });
-  //   return { code, allNumOfLine };
-  // };
-
-  // reader.onerror = function () {
-  //   console.log('ERROR: ', reader.error);
-  //   return { error: `Sorry! Your file could not be loaded! Error: ${reader.error}` };
-  // };
-
-  // console.log('reader.result:', reader.result);
-  // return reader.result;
 }

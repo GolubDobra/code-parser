@@ -5,51 +5,67 @@ import { ErrorNotice } from '../ErrorNotice';
 import './style.css';
 
 export const Source = ({ data }) => {
-  console.log('data', data);
-  const numOfLineWithDefect = data.allNumOfLine;
-  const numOfLatterWithDefect = data.numOfLatter;
-  const styledRef = React.createRef();
-  // console.log('numOfLineWithDefect: ', numOfLineWithDefect);
-  // console.log('numOfLatterWithDefect: ', numOfLatterWithDefect);
-  const styledElement = { backgroundColor: '#fad5d5' };
-  const allLineDefects = [];
-  for (let key in numOfLineWithDefect) {
-    allLineDefects.push(...numOfLineWithDefect[key]);
+  let numOfLineWithDefect = {};
+  if (data) {
+    for (let key in data) {
+      if (key !== 'code' && key !== 'errorNotice') {
+        numOfLineWithDefect = {
+          ...numOfLineWithDefect,
+          ...{
+            [key]: Object.values(data[key].allNumOfLine).flat(),
+          },
+        };
+      }
+    }
   }
+
+  const allNumOfLineWithDefect = Object.values(numOfLineWithDefect).flat();
+  const styledWarningElement = { backgroundColor: '#efe842bd' };
+  const styledErrorElement = { backgroundColor: '#ef4242ab' };
+  const styledPossibleErrorElement = { backgroundColor: '#ff7834bf' };
 
   const styledCode = (code) => {
     const separateCode = code.split(/[\n]/);
-    // console.log('separateCode', separateCode);
-    // const numOfLine = 0;
-
-    const result = separateCode.map((cur, index) => {
-      if (allLineDefects.includes(index + 1)) {
-        return (
-          <pre key={index} style={styledElement}>
-            {cur}
-          </pre>
-        );
-      }
-      return <pre key={index}>{cur}</pre>;
-    });
-
-    // console.log('result: ', result);
+    const result = [];
+    result.push(
+      ...separateCode.map((cur, index) => {
+        if (allNumOfLineWithDefect.includes(index + 1)) {
+          return (
+            <pre
+              key={index}
+              style={
+                !numOfLineWithDefect.warnings ||
+                !numOfLineWithDefect.error ||
+                !numOfLineWithDefect.possibleError
+                  ? {}
+                  : numOfLineWithDefect.error.includes(index + 1)
+                  ? styledErrorElement
+                  : numOfLineWithDefect.warnings.includes(index + 1)
+                  ? styledWarningElement
+                  : numOfLineWithDefect.possibleError.includes(index + 1)
+                  ? styledPossibleErrorElement
+                  : {}
+              }>
+              {cur}
+            </pre>
+          );
+        }
+        return <pre key={index}>{cur}</pre>;
+      }),
+    );
 
     return result && result.length > 0 ? result : null;
   };
 
-  // console.log(styledCode(data.code));
   return (
-    <div className={!data.error ? 'root root_source' : 'root root_error'}>
-      {!data.error ? (
+    <div className={!data.requestError ? 'source source_success' : 'source source_error'}>
+      {!data.requestError ? (
         <React.Fragment>
-          <pre className="source" ref={styledRef}>
-            {styledCode(data.code).map((element) => element)}
-          </pre>
-          <ErrorNotice notice={numOfLatterWithDefect} allLineDefects={allLineDefects} />
+          <pre className="source">{styledCode(data.code).map((element) => element)}</pre>
+          <ErrorNotice notice={data.errorNotice} numOfLineWithDefect={numOfLineWithDefect} />
         </React.Fragment>
       ) : (
-        <div className="error">{data.error}</div>
+        <div className="error">{data.requestError}</div>
       )}
     </div>
   );

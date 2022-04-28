@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  -webkit-box-shadow: 4px 4px 8px 0px rgba(253, 253, 253, 0.2);
-  -moz-box-shadow: 4px 4px 8px 0px rgba(253, 253, 253, 0.2);
-  box-shadow: 4px 4px 8px 0px rgba(253, 253, 253, 0.2);
+  -webkit-box-shadow: 4px 4px 8px 0px #fdfdfd1f;
+  -moz-box-shadow: 4px 4px 8px 0px #fdfdfd1f;
+  box-shadow: 4px 4px 8px 0px #fdfdfd1f;
 }

@@ -14,7 +14,6 @@ export const MainPage = () => {
     setIsLoaded(!!sourse);
   }, [sourse]);
 
-  // console.log(sourse);
   return (
     <div className="root">
       <Header />
